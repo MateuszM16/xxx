@@ -16,7 +16,6 @@
 
                     $poprawne_dane = true;
 
-
                     $login = strip_tags($_POST["login"]); 
                     $haslo = strip_tags($_POST["haslo"]);
                     $haslo2 = strip_tags($_POST["haslo2"]);
@@ -24,7 +23,7 @@
                     $urodziny = strip_tags($_POST["urodziny"]);
                     $plec = strip_tags($_POST["plec"]);
 
-                    if((strlen($login)<=4)||(strlen($login)>30))
+                    if((strlen($login)<=3)||(strlen($login)>30))
                     {
                         $poprawne_dane = false;
                         $_SESSION['e_login'] = "Login musi posiadać minimum 4 znaki";
@@ -139,6 +138,65 @@
                    
                 }
 
+                if(isset($_POST['login-l']))
+                {
+                    $login_l = strip_tags($_POST["login-l"]); 
+                    $haslo_l = strip_tags($_POST["haslo-l"]);
+
+                    $_SESSION['z_login-l']=$login_l;
+
+                    require_once "polaczenie.php";
+                    mysqli_report(MYSQLI_REPORT_STRICT);
+    
+                    try
+                    {
+                        $conn = new mysqli($servername, $username, $password, $dbname);
+                        if ($conn->connect_errno!=0)
+                            {
+                                throw new Exception(mysqli_connect_errno());
+                            }
+                        else
+                        {
+                            if($rezultat = $conn->query("SELECT * FROM uzytkownicy WHERE LOGIN='$login_l'"))
+                            {
+                                $ile_uzytkownikow = $rezultat->num_rows;
+                                if($ile_uzytkownikow>0)
+                                {
+                                    $wiersz = $rezultat->fetch_assoc();
+
+                                    if(password_verify($haslo_l,$wiersz['HASLO']))
+                                    {
+                                        $_SESSION['zalogowany-user'] = $login_l;
+                                        unset($_POST['login-l']);
+                                        header('Location:tablica.php');     
+                                    }
+                                    else
+                                    {
+                                        $_SESSION['e_haslo-l']="Nie poprawne haslo";
+                                    }
+
+                                }
+                                else
+                                {
+                                    $_SESSION['e_login-l']="Nie istnieje taki użytkownik";
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception($conn->error);
+                            }
+
+                            $conn->close();
+                        }
+                    }                  
+ 
+                    catch(Expection $e)
+                    {
+                        echo '<span style="color:red;"> Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</span>';
+                    }
+
+            }
+
             ?>
 
             <script>
@@ -210,7 +268,6 @@
              }
 
         ?>
-
                    <div class="strona"> 
                     <div class="nav">
                         <div class="p">
@@ -228,9 +285,28 @@
                                 <div class="xy">
                                     <form action="logowanie.php" method="post">
                                         <div class="l2">Login: </div>
-                                        <div class="l1"><input type="text" name="login" class="logowanie"></div>
+                                        <div class="l1"><input type="text" name="login-l" value="<?php
+                                            if(isset($_SESSION['z_login-l']))
+                                            {
+                                                echo $_SESSION['z_login-l'];
+                                                unset($_SESSION['z_login-l']);
+                                            }?>"class="logowanie"></div>
+                                        <?php
+                                                if(isset($_SESSION['e_login-l']))
+                                                {
+                                                    echo '<div class="error">'.$_SESSION['e_login-l'].'</div>';
+                                                    unset($_SESSION['e_login-l']);
+                                                }
+                                            ?>
                                         <div class="l2">Hasło: </div>
-                                        <div class="l1"><input type="password" name="haslo" class="logowanie"></div>
+                                        <div class="l1"><input type="password" name="haslo-l" class="logowanie"></div>
+                                        <?php
+                                                if(isset($_SESSION['e_haslo-l']))
+                                                {
+                                                    echo '<div class="error">'.$_SESSION['e_haslo-l'].'</div>';
+                                                    unset($_SESSION['e_haslo-l']);
+                                                }
+                                            ?>
                                         <div class="x3"><input type="submit" name="submit" value="Zaloguj" class ="zaloguj"></div>
                                     </form>
                                     <br><br>

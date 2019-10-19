@@ -7,6 +7,8 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
             <meta name="description" content="Witaj" />
 
+            <?php session_start(); ?>
+
         </head>
 
         <body>
@@ -18,7 +20,10 @@
                         <div class="log">
                             <div class="x"></div>
                             <div class="y">
-                                
+                                <div class="y-nowy">
+                                    <?php echo $_SESSION['zalogowany-user'] ?>
+                                        
+                                </div>
                             </div>
                         </div>
                         <div class="x"></div>

@@ -112,6 +112,9 @@ input,textarea {
 	border-radius: 8px;
 	height: 26px;
 	cursor: pointer;
+	text-align: center;
+	color: rgb(77, 47, 25);
+	font-size: 20px;
 }
 
 .logowanie:focus
