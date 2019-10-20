@@ -28,13 +28,14 @@ body
 {
 	width:30%;
 	float: left;
-	height: 300px;
+	min-height: 800px;
+	height: 100%;
 }
 
 .y
 {
 	width:40%;
-	min-width: 500px;
+	min-width: 200px;
 	background: linear-gradient(rgb(243, 101, 0),rgb(247, 189, 0),rgb(243, 101, 0));
 	float: left;
 	min-height: 200px;
@@ -145,7 +146,7 @@ input,textarea {
 
 .error
 {
-	color: red;
+	color: rgb(231, 9, 9);
 	font-size: 20px;
 	padding-bottom: 10px;
 	padding-top: 5px;

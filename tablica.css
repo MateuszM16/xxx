@@ -1,0 +1,89 @@
+.pasek
+{
+	width: 100%;
+	height: 70px;
+	background: linear-gradient(rgb(36, 36, 214),rgb(7, 7, 133));
+	text-align: right;
+	margin-bottom: 20px;
+}
+
+.podziel
+{
+	width: 25%;
+	float: left;
+	text-align: center;
+	line-height: 70px;
+	min-height: 10px;
+}
+
+.logowanie
+{
+	width: 100%;
+	background: linen;
+}
+
+.logowanie:hover
+{
+	background: linear-gradient(rgb(152, 236, 208),rgb(91, 91, 248));
+}
+
+.logowanie:focus
+{
+	background: linear-gradient(rgb(152, 236, 208),rgb(91, 91, 248));
+}
+
+.okno_post
+{
+	width: 80%;
+	min-height: 200px;
+	text-align: center;
+	background: linen;
+}
+
+.napis
+{
+	font-size: 30px;
+	color: rgb(251, 255, 7);
+	padding:25px;
+}
+
+.dodaj_post
+{
+	padding:10px;
+	margin-bottom: 20px;
+}
+
+.y
+{
+	margin-bottom: 20px;
+}
+
+.x
+{
+	height: 2000px;
+}
+
+.autor
+{
+	text-align: left;
+	margin-left: 20px;
+	font-size: 20px;
+	color: linen;
+}
+
+.link_autor
+{
+	text-decoration: none;
+	color: linen;
+	font-size: 20px;
+	padding: 10px;
+}
+
+.tekst
+{
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 40px;
+}
+

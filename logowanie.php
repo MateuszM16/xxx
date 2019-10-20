@@ -11,6 +11,11 @@
 
                 session_start();
 
+                if(isset($_SESSION['zalogowany-user']))
+                {
+                    header('Location:tablica.php');
+                }
+
                 if(isset($_POST['email']))
                 {
 
@@ -403,7 +408,7 @@
                                     </form>
                                     <br><br>
                                 </div>
-                         </div>
+                        </div>
                         <div class="x"></div>
                     </div>
 

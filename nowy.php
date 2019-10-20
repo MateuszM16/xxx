@@ -7,6 +7,17 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
             <meta name="description" content="Witaj" />
 
+            <?php 
+
+                session_start();
+
+                if(isset($_SESSION['zalogowany-user']))
+                {
+                    header('Location:tablica.php');
+                }
+
+            ?>
+
         </head>
 
         <body>
@@ -24,8 +35,9 @@
                                 </div>
                                 <a href="logowanie.php"><input type="submit" name="submit" value="Zaloguj" class="zaloguj"></a> 
                             </div>
+                            <div class="x"></div>
                         </div>
-                        <div class="x"></div>
+                        
                     </div>
 
                     </div>
