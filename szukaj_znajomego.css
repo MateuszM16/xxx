@@ -1,0 +1,124 @@
+.link_login
+{
+	text-decoration: none;
+	color: rgb(240, 240, 240);
+	font-size: 30px;
+	display: block;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	background: rgb(0, 0, 0);
+	margin-top: 20px;
+	text-align: left;
+	margin-bottom: 10px;
+	padding-left: 20px;
+}
+
+.link_login:hover
+{
+	color:rgb(243, 101, 0);
+}
+
+.link_login_brak
+{
+	text-decoration: none;
+	color: rgb(240, 240, 240);
+	font-size: 30px;
+	display: block;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	background: rgb(0, 0, 0);
+	margin-top: 20px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.lewo
+{
+	float: left;
+	width: 50%;
+	margin-bottom: 20px;
+}
+
+.prawo
+{
+	float: left;
+	width: 50%;
+	text-align: left;
+	margin-bottom: 20px;
+}
+
+.informacje
+{
+	width: 100%;
+	clear: both;
+}
+
+img
+{
+	border-radius: 100px;
+}
+
+.login
+{
+	font-size: 30px;
+	margin-bottom: 30px;	
+}
+
+.opis
+{
+	text-align: center;
+	padding-right: 50px;
+}
+
+.naglowek
+{
+	font-size: 30px;
+	margin-bottom: 30px;
+	border-top-style: solid;
+	padding-top: 10px;
+}
+
+.dane
+{
+	padding: 5px;
+	text-align: left;
+	padding-left: 30px;
+	font-size: 20px;
+}
+
+.y
+{
+	padding-bottom: 20px;
+	padding-right: 20px;
+}
+
+.info
+{
+	width: 50%;
+	float: left;
+}
+
+.znajomi
+{
+	width: 50%;
+	float: left;
+}
+
+.zapros
+{
+	width: 50%;
+	min-width: 220px;
+	border-radius: 8px;
+	cursor: pointer;
+	min-height: 35px;
+	margin-top: 10px;
+	font-size: 20px;
+}
+
+.zapros:hover
+{
+	background: rgb(0, 0, 0);
+	color:rgb(243, 101, 0);
+}

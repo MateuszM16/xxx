@@ -1,9 +1,9 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 21 Paź 2019, 02:15
+-- Czas generowania: 21 Paź 2019, 23:50
 -- Wersja serwera: 10.1.21-MariaDB
 -- Wersja PHP: 5.6.30
 
@@ -57,17 +57,20 @@ CREATE TABLE `uzytkownicy` (
   `HASLO` varchar(254) COLLATE utf8_polish_ci NOT NULL,
   `EMAIL` varchar(100) COLLATE utf8_polish_ci NOT NULL,
   `URODZENIE` date NOT NULL,
-  `PLEC` varchar(10) COLLATE utf8_polish_ci NOT NULL
+  `PLEC` varchar(10) COLLATE utf8_polish_ci NOT NULL,
+  `OPIS` text COLLATE utf8_polish_ci,
+  `MIEJSCOWOSC` text COLLATE utf8_polish_ci,
+  `HOBBY` text COLLATE utf8_polish_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `uzytkownicy`
 --
 
-INSERT INTO `uzytkownicy` (`ID`, `LOGIN`, `HASLO`, `EMAIL`, `URODZENIE`, `PLEC`) VALUES
-(40, 'mateusz', '$2y$10$MsR2sNzj4VHTAXEjZmRvwuH3cKk.QJIRs8eUgrg2LW7frlBGRwc6i', 'mat@o2.pl', '2019-10-01', 'M'),
-(41, 'bartek', '$2y$10$gxrGmHqNtnqqded2T4G4Be2sGzVd39oh9j70BDWRERMlp37v/J.tm', 'bartek@o2.pl', '2019-10-05', 'M'),
-(42, 'Natalia', '$2y$10$DgRJkMEtGpqpRUT8kr10o.4bbpAsqy/8q/f10IkzlLrcgpmCRHfdi', 'natalia@o2.pl', '2019-10-01', 'M');
+INSERT INTO `uzytkownicy` (`ID`, `LOGIN`, `HASLO`, `EMAIL`, `URODZENIE`, `PLEC`, `OPIS`, `MIEJSCOWOSC`, `HOBBY`) VALUES
+(40, 'mateusz', '$2y$10$MsR2sNzj4VHTAXEjZmRvwuH3cKk.QJIRs8eUgrg2LW7frlBGRwc6i', 'mat@o2.pl', '2000-08-05', 'M', '\'witam wszytskich na moim profilu\'', 'Iwowe', 'sport i gry'),
+(41, 'bartek', '$2y$10$gxrGmHqNtnqqded2T4G4Be2sGzVd39oh9j70BDWRERMlp37v/J.tm', 'bartek@o2.pl', '2007-10-05', 'M', NULL, NULL, NULL),
+(42, 'Natalia', '$2y$10$DgRJkMEtGpqpRUT8kr10o.4bbpAsqy/8q/f10IkzlLrcgpmCRHfdi', 'natalia@o2.pl', '1993-10-01', 'K', NULL, NULL, NULL);
 
 --
 -- Indeksy dla zrzutów tabel

@@ -10,6 +10,7 @@
             <?php
 
                 session_start();
+				error_reporting(0);
 
                 if(isset($_SESSION['zalogowany-user']))
                 {
@@ -87,7 +88,7 @@
                     try
                     {
                         $conn = new mysqli($servername, $username, $password, $dbname);
-                        if ($conn->connect_errno!=0)
+                        if ($conn->connect_error)
                             {
                                 throw new Exception(mysqli_connect_errno());
                             }
@@ -95,7 +96,7 @@
                         {
                             $rezultat = $conn->query("SELECT ID FROM uzytkownicy WHERE EMAIL='$email'");
                      
-                            if (!$rezultat) throw new Exception($conn->error);
+                            if (!$rezultat) throw new Exception($conn->connect_error);
                             
                             $ile_takich_maili = $rezultat->num_rows;
                             if($ile_takich_maili>0)
@@ -106,7 +107,7 @@
 
                             $rezultat = $conn->query("SELECT ID FROM uzytkownicy WHERE LOGIN='$login'");
                  
-                            if (!$rezultat) throw new Exception($conn->error);
+                            if (!$rezultat) throw new Exception($conn->connect_error);
                             
                             $ile_takich_nickow = $rezultat->num_rows;
                             if($ile_takich_nickow>0)
@@ -127,7 +128,7 @@
                                 }
                                 else
                                 {
-                                    throw new Exception($conn->error);
+                                    throw new Exception($conn->connect_error);
                                 }
                             
                             }
@@ -136,9 +137,9 @@
                         }
                     }                  
  
-                    catch(Expection $e)
+                    catch (Exception $e)
                     {
-                        echo '<span style="color:red;"> Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</span>';
+                        die("<div class='server_blad'>Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</div>");
                     }
                    
                 }
@@ -156,7 +157,7 @@
                     try
                     {
                         $conn = new mysqli($servername, $username, $password, $dbname);
-                        if ($conn->connect_errno!=0)
+                        if ($conn->connect_error)
                             {
                                 throw new Exception(mysqli_connect_errno());
                             }
@@ -188,16 +189,16 @@
                             }
                             else
                             {
-                                throw new Exception($conn->error);
+                                throw new Exception($conn->connect_error);
                             }
 
                             $conn->close();
                         }
                     }                  
  
-                    catch(Expection $e)
+                    catch (Exception $e)
                     {
-                        echo '<span style="color:red;"> Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</span>';
+                        die("<div class='server_blad'>Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</div>");
                     }
 
             }

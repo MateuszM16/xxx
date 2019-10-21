@@ -35,8 +35,8 @@ body
 .y
 {
 	width:40%;
-	min-width: 200px;
-	background: linear-gradient(rgb(243, 101, 0),rgb(247, 189, 0),rgb(243, 101, 0));
+	min-width: 400px;
+	background: linear-gradient(rgb(243, 101, 0),rgb(241, 179, 62),rgb(243, 101, 0));
 	float: left;
 	min-height: 200px;
 	text-align: center;
@@ -65,7 +65,7 @@ body
 .l1
 {
 	text-align: left;
-	padding-top: 10px;
+	padding-top: 20px;
 }
 
 input,textarea {
@@ -109,7 +109,8 @@ input,textarea {
 .logowanie
 {
 	width: 30%;
-	min-width: 80px;
+	min-width: 100px;
+	max-width: 400px;
 	border-radius: 8px;
 	height: 26px;
 	cursor: pointer;
@@ -157,4 +158,13 @@ input,textarea {
 	line-height: 100px;
 	font-size: 30px;
 	color:white;
+}
+
+.server_blad
+{
+	color:red;
+	text-align: center;
+	font-size: 40px;
+	width: 100%;
+	padding-top: 25%;
 }
