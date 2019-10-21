@@ -57,7 +57,8 @@
 
                                     $wyszukaj = $_POST['wyszukaj'];
 
-                                
+                                    echo "<a href='#' class='link_login_brak'> Wyniki wyszukiwania dla '".$wyszukaj."'"."</a>";
+
                                     require_once "polaczenie.php";
                                     mysqli_report(MYSQLI_REPORT_STRICT);
                     
@@ -76,12 +77,12 @@
                                                 {
                                                     while($wiersz = $rezultat->fetch_assoc())
                                                     {
-                                                        echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'>".$wiersz["LOGIN"]."</a>";
+                                                        echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
                                                     }
                                                 }
                                                 else 
                                                 {
-                                                    echo "<a href='szukaj_znajomego.php' class='link_login_brak'>Nie znaleziona użytkownika</a>";
+                                                    echo "<a href='#' class='link_login_brak'>Nie znaleziona użytkownika</a>";
                                                 }
                                             }
                                             else
