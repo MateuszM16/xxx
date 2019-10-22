@@ -37,8 +37,8 @@
                                 if(isset($_POST['wyszukaj']))
                                 {
 
-                                    $wyszukaj = $_POST['wyszukaj'];
-
+                                    $wyszukaj = strip_tags($_POST['wyszukaj']);
+                                    
                                     echo "<a href='#' class='link_login_brak'> Wyniki wyszukiwania dla '".$wyszukaj."'"."</a>";
 
                                     require_once "polaczenie.php";

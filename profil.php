@@ -19,7 +19,7 @@
                     header('Location:logowanie.php');
                 }
 
-                if((!isset($_GET['LOGIN']))||(!isset($_SESSION['login_link'])))
+                if((!isset($_GET['LOGIN']))&&(!isset($_SESSION['login_link'])))
                 {
                     header('Location:tablica.php');
                 }
@@ -36,11 +36,6 @@
                         <div class="log">
                             <div class="x"></div>
                             <div class="y">
-                                <div class="lewo">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP"  height="200" width="200">
-                                </div>
-
-                                <div class="prawo">
 
                                 <?php
 
@@ -66,9 +61,16 @@
                                                 if ($rezultat->num_rows > 0) 
                                                 {
                                                         $wiersz = $rezultat->fetch_assoc();
+
+                                                        echo "<div class='lewo'>";
+                                                        echo "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP'  height='200' width='200'>";
+                                                        echo "</div>";
+
+                                                    
                                                         if($wiersz["PLEC"]=="K") $wiersz["PLEC"]="Kobieta";
                                                         else $wiersz["PLEC"]="Mężczyzna";
-                                                
+
+                                                        echo "<div class='prawo'>";
                                                         echo "<div class='login'> Login: ".$wiersz["LOGIN"]."</div>";
                                                         echo "<div class='opis'>".$wiersz["OPIS"]."</div>";
                                                         echo "</div>";
