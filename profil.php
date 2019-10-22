@@ -19,33 +19,20 @@
                     header('Location:logowanie.php');
                 }
 
+                if((!isset($_GET['LOGIN']))||(!isset($_SESSION['login_link'])))
+                {
+                    header('Location:tablica.php');
+                }
+
             ?>
 
         </head>
 
         <body>
                 <div class="strona"> 
-                    <div class="nav">
-                        <div class="pasek">
-                            <div class="podziel"></div>
 
-                            <form action="szukaj_znajomego.php" method="post">
-                                <div class="podziel"><input type="search" placeholder="Szukaj znajomego..."  name="wyszukaj" incremental autofocus required class="logowanie"></div>
-                            </form>
+                        <?php include "menu.php" ?>
 
-                            <div class="podziel">
-                                <form action="tablica.php" method="post">
-                                    <input type="submit" name="Profil" value="Profil" class="zaloguj">
-                                </form>
-                            </div>
-                            <div class="podziel">
-                                <form action="tablica.php" method="post">
-                                    <input type="submit" name="wyloguj" value="Wyloguj" class="zaloguj">
-                                </form>
-                            </div>
-
-                        </div>
-                        <div class="pasek_pole"></div>
                         <div class="log">
                             <div class="x"></div>
                             <div class="y">
@@ -64,6 +51,7 @@
                                     if(isset($_GET['LOGIN'])) $_SESSION['login_link'] = $_GET['LOGIN'];
                                     $login_link = $_SESSION['login_link'];
 
+
                                     try
                                     {
                                         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -81,7 +69,6 @@
                                                         if($wiersz["PLEC"]=="K") $wiersz["PLEC"]="Kobieta";
                                                         else $wiersz["PLEC"]="Mężczyzna";
                                                 
-
                                                         echo "<div class='login'> Login: ".$wiersz["LOGIN"]."</div>";
                                                         echo "<div class='opis'>".$wiersz["OPIS"]."</div>";
                                                         echo "</div>";
@@ -105,22 +92,133 @@
                                                 throw new Exception($conn->connect_error);
                                             }
 
+
+
+
+                                            if(isset($_POST['zapros_do_znajomych']))
+                                            {
+
+                                                if($rezultat = $conn->query("INSERT INTO zaproszenia (ZAPRASZAJACY, PRZYJMUJACY)
+                                                VALUES ((SELECT ID FROM uzytkownicy WHERE LOGIN='$login'), (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link'))"))
+                                                {
+                                                    unset($_POST['zapros_do_znajomych']);                                     
+                                                }
+                                                else 
+                                                {
+                                                    throw new Exception($conn->connect_error);
+                                                }
+                                            }
+
+                                            if(isset($_POST['przyjmnij_do_znajomych']))
+                                            {
+                                                if($rezultat = $conn->query("INSERT INTO znajomi (ID_LOGIN_1, ID_LOGIN_2)
+                                                        VALUES ((SELECT ID FROM uzytkownicy WHERE LOGIN='$login'),(SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link'))"))
+                                                {
+                                                    if($rezultat = $conn->query("DELETE FROM zaproszenia WHERE ZAPRASZAJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') AND PRZYJMUJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') OR PRZYJMUJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') AND ZAPRASZAJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')"))
+                                                    unset($_POST['przyjmnij_do_znajomych']);   
+                                                }
+                                                                                       
+                                                else 
+                                                {
+                                                    throw new Exception($conn->connect_error);
+                                                }
+                                            }
+
+                                            if(isset($_POST['usun_ze_znajomych']))
+                                            {
+                                                if($rezultat = $conn->query("DELETE FROM znajomi WHERE ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') OR ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link')"))
+                                                {
+                                                    unset($_POST['usun_ze_znajomych']);   
+                                                }
+                                                                                       
+                                                else 
+                                                {
+                                                    throw new Exception($conn->connect_error);
+                                                }
+                                            }
+
+                                            if(isset($_POST['anuluj_zaproszenie']))
+                                            {
+                                                if($rezultat = $conn->query("DELETE FROM zaproszenia WHERE ZAPRASZAJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND PRZYJMUJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link')"))
+                                                {
+                                                    unset($_POST['anuluj_zaproszenie']);   
+                                                }
+                                                                                       
+                                                else 
+                                                {
+                                                    throw new Exception($conn->connect_error);
+                                                }
+                                            }
+
+
+
+                                            if($rezultat = $conn->query("SELECT * FROM zaproszenia WHERE ZAPRASZAJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND PRZYJMUJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link')"))
+                                            {
+                                                if ($rezultat->num_rows > 0) 
+                                                {
+                                                        $wiersz = $rezultat->fetch_assoc();
+
+                                                        echo "<div class='znajomi'>";
+                                                        echo "<form action='profil.php' method='post'>";
+                                                        echo "<input type='submit' name='anuluj_zaproszenie' value='Anuluj zaproszenie' class='zapros'>";
+                                                        echo "</form>";
+                                                        echo "</div>";
+                                                        
+                                                }
+                                                else 
+                                                {
+                                                    if($rezultat = $conn->query("SELECT * FROM zaproszenia WHERE PRZYJMUJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ZAPRASZAJACY = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link')"))
+                                                        if ($rezultat->num_rows > 0) 
+                                                            {
+                                                                $wiersz = $rezultat->fetch_assoc();
+
+                                                                echo "<div class='znajomi'>";
+                                                                echo "<form action='profil.php' method='post'>";
+                                                                echo "<input type='submit' name='przyjmnij_do_znajomych' value='Przyjmnij do znajomych' class='zapros'>";
+                                                                echo "</form>";
+                                                                echo "</div>";
+                                                            }
+                                                            else 
+                                                            {
+                                                                if($rezultat = $conn->query("SELECT * FROM znajomi WHERE ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') OR ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') "))
+                                                                    if ($rezultat->num_rows > 0) 
+                                                                    {
+                                                                        $wiersz = $rezultat->fetch_assoc();
+
+                                                                        echo "<div class='znajomi'>";
+                                                                        echo "<form action='profil.php' method='post'>";
+                                                                        echo "<input type='submit' name='usun_ze_znajomych' value='Usuń ze znajomych' class='zapros'>";
+                                                                        echo "</form>";
+                                                                        echo "</div>";
+                                                                    }
+                                                                    else 
+                                                                    {
+                                                                        echo "<div class='znajomi'>";
+                                                                        echo "<form action='profil.php' method='post'>";
+                                                                        echo "<input type='submit' name='zapros_do_znajomych' value='Zapros do znajomych' class='zapros'>";
+                                                                        echo "</form>";
+                                                                        echo "</div>";
+                                                                    }
+                                                            }
+                                                
+                                                }
+
+
                                             $conn->close();
                                         }
-                                    }                  
+                                    }  
+                                    
+                                }
 
                                     catch (Exception $e)
                                     {
+                                        echo $e;
                                         die("<div class='server_blad'>Błąd połaczenia! Przepraszamy! Proszę spróbować za chwilę!</div>");
                                     }
 
                                 ?>
 
-                                <div class='znajomi'>
-                                    <form action="profil.php" method="post">
-                                        <input type="submit" name="znajomi" value="Zaproś do znajomych" class="zapros">
-                                    </form>
-                                </div>
+                                
  
                             </div>
 
