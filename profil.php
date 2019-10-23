@@ -63,7 +63,7 @@
                                                         $wiersz = $rezultat->fetch_assoc();
 
                                                         echo "<div class='lewo'>";
-                                                        echo "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP'  height='200' width='200'>";
+                                                        echo "<img src='./img/".$wiersz["LOGIN"].".jpg'  height='200' width='200'>";
                                                         echo "</div>";
 
                                                     

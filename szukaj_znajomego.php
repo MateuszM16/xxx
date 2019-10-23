@@ -59,7 +59,7 @@
                                                 {
                                                     while($wiersz = $rezultat->fetch_assoc())
                                                     {
-                                                        echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
+                                                        echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='./img/".$wiersz["LOGIN"].".jpg'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
                                                     }
                                                 }
                                                 else 

@@ -39,25 +39,87 @@
 
                                     $login = $_SESSION['zalogowany-user'];
 
-                                    $poprawne_dane = true;
-
-                                    $urodziny = strip_tags($_POST["urodziny"]);
-                                    $plec = strip_tags($_POST["plec"]);
-                                    $opis = strip_tags($_POST["opis"]);
-                                    $miejscowosc = strip_tags($_POST["miejscowosc"]);
-                                    $hobby = strip_tags($_POST["hobby"]);
-
-                                    $data=date('U');
-                                    $data2 = strtotime($urodziny);
-                                    $mindata = strtotime('10.10.1920');
-                                    if(($data2 > $data)||($data2<$mindata))
+                                    if(isset($_POST['zapisz']))
                                     {
-                                        $poprawne_dane = false;
-                                        $_SESSION['e_data_ur'] = "Podaj prawidłową date urodzenia";
+                                        $poprawne_dane = true;
+
+                                        $urodziny = strip_tags($_POST["urodziny"]);
+                                        $plec = strip_tags($_POST["plec"]);
+                                        $opis = strip_tags($_POST["opis"]);
+                                        $miejscowosc = strip_tags($_POST["miejscowosc"]);
+                                        $hobby = strip_tags($_POST["hobby"]);
+
+                                        $data=date('U');
+                                        $data2 = strtotime($urodziny);
+                                        $mindata = strtotime('10.10.1920');
+                                        if(($data2 > $data)||($data2<$mindata))
+                                        {
+                                            $poprawne_dane = false;
+                                            $_SESSION['e_data_ur'] = "Podaj prawidłową date urodzenia";
+                                        }
+
+
+                                        function sprawdz_bledy()
+                                        {
+                                            if ($_FILES['plik']['error'] > 0)
+                                            {
+                                                echo 'problem: ';
+                                                switch ($_FILES['plik']['error'])
+                                                {
+                                                // jest większy niż domyślny maksymalny rozmiar,
+                                                // podany w pliku konfiguracyjnym
+                                                case 1: {echo 'Rozmiar pliku jest zbyt duży.'; break;} 
+
+                                                // jest większy niż wartość pola formularza 
+                                                // MAX_FILE_SIZE
+                                                case 2: {echo 'Rozmiar pliku jest zbyt duży.'; break;}
+
+                                                // plik nie został wysłany w całości
+                                                case 3: {echo 'Plik wysłany tylko częściowo.'; break;}
+
+                                                // plik nie został wysłany
+                                                case 4: {echo 'Nie wysłano żadnego pliku.'; break;}
+
+                                                // pozostałe błędy
+                                                default: {echo 'Wystąpił błąd podczas wysyłania.';
+                                                    break;}
+                                                }
+                                                return false;
+                                            }
+                                        return true;
+                                        }
+
+                                        function zapisz_plik()
+                                                {
+                                                $lokalizacja = "./img/".$_SESSION['zalogowany-user'].".jpg";
+                                                if(is_uploaded_file($_FILES['plik']['tmp_name']))
+                                                {
+                                                    if(!move_uploaded_file($_FILES['plik']['tmp_name'], $lokalizacja))
+                                                    {
+                                                    echo 'problem: Nie udało się skopiować pliku do katalogu.';
+                                                        return false;  
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    echo 'problem: Możliwy atak podczas przesyłania pliku.';
+                                                    echo 'Plik nie został zapisany.';
+                                                    return false;
+                                                }
+                                                return true;
+                                                }
+
+
+                                                function sprawdz_typ()
+                                                {
+                                                    if ($_FILES['plik']['type'] != 'image/jpeg')
+                                                        return false;
+                                                    return true;
+                                                }
+                                                
                                     }
 
-                                   
-
+                                    
                                     try
                                     {
                                         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -70,6 +132,10 @@
 
                                             if((isset($_POST['zapisz']))&&($poprawne_dane==true))
                                             {
+
+                                                sprawdz_bledy();
+                                                sprawdz_typ();
+                                                zapisz_plik();
                                                
                                                 if($rezultat = $conn->query("UPDATE uzytkownicy SET PLEC = '$plec', URODZENIE = '$urodziny', OPIS = '$opis', MIEJSCOWOSC = '$miejscowosc', HOBBY = '$hobby' WHERE LOGIN = '$login'"))
                                                 {
@@ -87,10 +153,10 @@
                                                 {
                                                         $wiersz = $rezultat->fetch_assoc();
 
-                                                        echo "<form action='edytuj_profil.php' method='post'>";
+                                                        echo "<form enctype='multipart/form-data' action='edytuj_profil.php' method='post'>";
 
                                                         echo "<div class='lewo'>";
-                                                        echo "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYdAV2YBvffsnCsvkh6XXpkFvB_9m_jaVa5Al3tQk_IZ3lLfvP'  height='200' width='200'>";
+                                                        echo "<img src='./img/".$wiersz["LOGIN"].".jpg'  height='200' width='200'>";
                                                         echo "<br><br><input type='file' class='logowanie' name='plik'/>";
                                                         echo "</div>";
 
