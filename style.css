@@ -28,20 +28,20 @@ body
 {
 	width:30%;
 	float: left;
-	min-height: 800px;
+	min-height: 100px;
 	height: 100%;
 }
+
 
 .y
 {
 	width:40%;
 	min-width: 400px;
 	background: linear-gradient(rgb(243, 101, 0),rgb(241, 179, 62),rgb(243, 101, 0));
-	float: left;
-	min-height: 200px;
 	text-align: center;
 	padding-top: 20px;
 	border-radius: 30px;
+	float: left;
 }
 
 .xx

@@ -74,6 +74,7 @@
                     <?php include "menu.php" ?>
                         <div class="log">
                             <div class="x"></div>
+                            <div class=y_kontener>
                             <div class="y">
                                 <div class="napis">
                                     Witaj <?php echo $_SESSION['zalogowany-user']; ?>! Chcesz coś upublikować?
@@ -89,9 +90,12 @@
                                     </form>
                                 </div>
 
+
                             </div>
 
                             <?php
+
+                                $login = $_SESSION['zalogowany-user'];
 
                                  require_once "polaczenie.php";
                                  mysqli_report(MYSQLI_REPORT_STRICT);
@@ -105,7 +109,7 @@
                                          }
                                      else
                                      {
-                                         if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN ORDER BY DATA DESC"))
+                                         if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN,uzytkownicy.ID FROM znajomi,posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE (uzytkownicy.ID = ID_LOGIN_1 AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') OR uzytkownicy.ID = ID_LOGIN_2 AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) UNION ALL ( SELECT TEKST,DATA,LOGIN,uzytkownicy.ID FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) ORDER BY DATA DESC"))
                                          {
                                             if ($rezultat->num_rows > 0) 
                                             {
@@ -146,6 +150,8 @@
 								}
              
                             ?>
+
+                            </div>
 
                             <div class="x">
                             </div>

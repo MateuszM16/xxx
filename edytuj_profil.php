@@ -30,6 +30,7 @@
 
                         <div class="log">
                             <div class="x"></div>
+                            <div class="y_kontener">
                             <div class="y">
                                 
                                 <?php
@@ -63,26 +64,15 @@
                                         {
                                             if ($_FILES['plik']['error'] > 0)
                                             {
-                                                echo 'problem: ';
+                                                
                                                 switch ($_FILES['plik']['error'])
                                                 {
-                                                // jest większy niż domyślny maksymalny rozmiar,
-                                                // podany w pliku konfiguracyjnym
-                                                case 1: {echo 'Rozmiar pliku jest zbyt duży.'; break;} 
-
-                                                // jest większy niż wartość pola formularza 
-                                                // MAX_FILE_SIZE
-                                                case 2: {echo 'Rozmiar pliku jest zbyt duży.'; break;}
-
-                                                // plik nie został wysłany w całości
-                                                case 3: {echo 'Plik wysłany tylko częściowo.'; break;}
-
-                                                // plik nie został wysłany
-                                                case 4: {echo 'Nie wysłano żadnego pliku.'; break;}
-
-                                                // pozostałe błędy
-                                                default: {echo 'Wystąpił błąd podczas wysyłania.';
-                                                    break;}
+                                                    case 1: {$_SESSION['e_plik'] = 'Rozmiar pliku jest zbyt duży.'; break;} 
+                                                    case 2: {$_SESSION['e_plik'] = 'Rozmiar pliku jest zbyt duży.'; break;}
+                                                    case 3: {$_SESSION['e_plik'] = 'Plik wysłany tylko częściowo.'; break;}
+                                                    case 4: {$_SESSION['e_plik'] = 'Nie wysłano żadnego pliku.'; break;}
+                                                    default: {$_SESSION['e_plik'] = 'Wystąpił błąd podczas wysyłania.';
+                                                        break;}
                                                 }
                                                 return false;
                                             }
@@ -96,14 +86,14 @@
                                                 {
                                                     if(!move_uploaded_file($_FILES['plik']['tmp_name'], $lokalizacja))
                                                     {
-                                                    echo 'problem: Nie udało się skopiować pliku do katalogu.';
+                                                        $_SESSION['e_plik'] = 'problem: Nie udało się skopiować pliku do katalogu.';
                                                         return false;  
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    echo 'problem: Możliwy atak podczas przesyłania pliku.';
-                                                    echo 'Plik nie został zapisany.';
+                                                    $_SESSION['e_plik'] = 'problem: Możliwy atak podczas przesyłania pliku.';
+                                                    $_SESSION['e_plik'] = 'Plik nie został zapisany.';
                                                     return false;
                                                 }
                                                 return true;
@@ -132,11 +122,11 @@
 
                                             if((isset($_POST['zapisz']))&&($poprawne_dane==true))
                                             {
-
-                                                sprawdz_bledy();
-                                                sprawdz_typ();
-                                                zapisz_plik();
-                                               
+                                                if((sprawdz_bledy()==true)&&(sprawdz_typ()==true))
+                                                {
+                                                    zapisz_plik();
+                                                }
+                                                
                                                 if($rezultat = $conn->query("UPDATE uzytkownicy SET PLEC = '$plec', URODZENIE = '$urodziny', OPIS = '$opis', MIEJSCOWOSC = '$miejscowosc', HOBBY = '$hobby' WHERE LOGIN = '$login'"))
                                                 {
                                                     unset($_POST['zapisz']);                                    
@@ -156,8 +146,14 @@
                                                         echo "<form enctype='multipart/form-data' action='edytuj_profil.php' method='post'>";
 
                                                         echo "<div class='lewo'>";
-                                                        echo "<img src='./img/".$wiersz["LOGIN"].".jpg'  height='200' width='200'>";
+                                                        echo "<img src='./img/".$wiersz["LOGIN"].".jpg' height='200' width='200'>";
                                                         echo "<br><br><input type='file' class='logowanie' name='plik'/>";
+                                                        if(isset($_SESSION['e_plik']))
+                                                        {
+                                                            echo '<div class="error"> Problem: '.$_SESSION['e_plik'].'</div>';
+                                                            unset($_SESSION['e_plik']);
+                                                        }
+
                                                         echo "</div>";
 
                                                         echo "<div class='prawo'>";
@@ -215,7 +211,7 @@
                                 ?>
 
                                 
- 
+                            
                             </div>
 
                         </div>
@@ -278,6 +274,7 @@
              
                             ?>
 
+                            </div>
                             <div class="x">
                             </div>
                         </div>

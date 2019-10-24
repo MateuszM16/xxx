@@ -405,7 +405,7 @@
                                                     unset($_SESSION['e_plec']);
                                                 }
                                             ?>
-                                        <div class="x3"><input type="submit" name="submit" value="Zarejestruj" class ="zaloguj"></div>
+                                            <div class="x3"><input type="submit" name="submit" value="Zarejestruj" class ="zaloguj"></div>
                                     </form>
                                     <br><br>
                                 </div>

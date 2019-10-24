@@ -30,6 +30,7 @@
 
                         <div class="log">
                             <div class="x"></div>
+                            <div class="y_kontener">
                             <div class="y">
 
                             <?php
@@ -85,6 +86,7 @@
              
                             ?>
 
+                            </div>
                             </div>
 
                             <div class="x">
