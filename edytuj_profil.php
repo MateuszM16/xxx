@@ -19,6 +19,13 @@
                     header('Location:logowanie.php');
                 }
 
+                $login = $_SESSION['zalogowany-user'];
+                
+                $zdj1 = "./img/".$login.".jpg";
+                $zdj2 = "./img/profilowe.jpg";
+
+                $zdj = file_exists($zdj1) ? $zdj1 : $zdj2; 
+
             ?>
 
         </head>
@@ -129,7 +136,24 @@
                                                 
                                                 if($rezultat = $conn->query("UPDATE uzytkownicy SET PLEC = '$plec', URODZENIE = '$urodziny', OPIS = '$opis', MIEJSCOWOSC = '$miejscowosc', HOBBY = '$hobby' WHERE LOGIN = '$login'"))
                                                 {
-                                                    unset($_POST['zapisz']);                                    
+                                                    unset($_POST['zapisz']);    
+                                                    header('Location:profil.php');                                
+                                                }
+                                                else 
+                                                {
+                                                    throw new Exception($conn->connect_error);
+                                                }
+                                            }
+
+                                            if(isset($_POST['usun_post']))
+                                            {
+
+                                                $jaki_post = $_GET['ID'];
+                                               
+                                                if($rezultat = $conn->query("DELETE FROM posty WHERE ID = '$jaki_post'"))
+                                                {
+                                                    unset($_POST['usun_post']);       
+             
                                                 }
                                                 else 
                                                 {
@@ -146,7 +170,7 @@
                                                         echo "<form enctype='multipart/form-data' action='edytuj_profil.php' method='post'>";
 
                                                         echo "<div class='lewo'>";
-                                                        echo "<img src='./img/".$wiersz["LOGIN"].".jpg' height='200' width='200'>";
+                                                        echo "<img src='$zdj' height='200' width='200'>";
                                                         echo "<br><br><input type='file' class='logowanie' name='plik'/>";
                                                         if(isset($_SESSION['e_plik']))
                                                         {
@@ -193,11 +217,6 @@
                                                 throw new Exception($conn->connect_error);
                                             }
 
-
-
-
-                                          
-
                                             $conn->close();
                                         }
                                     }  
@@ -232,7 +251,7 @@
                                          }
                                      else
                                      {
-                                         if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') ORDER BY DATA DESC"))
+                                         if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN,posty.ID FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') ORDER BY DATA DESC"))
                                          {
                                             if ($rezultat->num_rows > 0) 
                                             {
@@ -240,11 +259,13 @@
                                                 {
                                                     echo "<div class='y'>";
                                                     echo "<div class='autor'>";
-                                                    echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_autor'>".$wiersz["LOGIN"]."</a>";
-                                                    echo "<div class='data'>".$wiersz["DATA"]."</div>";
+                                                    echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_autor'><img class='zdj' src=$zdj  height='30' width='30'>   ".$wiersz["LOGIN"]."</a>";
+                                                    echo "<div class='data'>".$wiersz["DATA"];
+                                                    echo "</div>";
+                                                    echo "<form action='edytuj_profil.php?ID=".$wiersz['ID']."' method='post'> <input type='submit' name='usun_post' value='X' class='usun_post'></form>";
                                                     echo "</div>";
                                                     echo "<div class='tekst'>".$wiersz["TEKST"]."</div>";
-                                                    echo "</div>";  
+                                                    echo "</div>";
                                                 }
                                             }
                                             else 

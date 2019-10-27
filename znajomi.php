@@ -19,6 +19,9 @@
                     header('Location:logowanie.php');
                 }
 
+
+                $login = $_SESSION['zalogowany-user'];
+
             ?>
 
         </head>
@@ -57,7 +60,14 @@
                                                 {
                                                     while($wiersz = $rezultat->fetch_assoc())
                                                     {
-                                                            echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='./img/".$wiersz["LOGIN"].".jpg'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
+
+                                                        $zdj1 = "./img/".$wiersz["LOGIN"].".jpg";
+                                                        $zdj2 = "./img/profilowe.jpg";
+                                        
+                                                        $zdj = file_exists($zdj1) ? $zdj1 : $zdj2; 
+
+
+                                                        echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='$zdj'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
                                                     }
                                                 }
                                                 else 
@@ -80,7 +90,12 @@
                                                 {
                                                     while($wiersz = $rezultat->fetch_assoc())
                                                     {
-                                                            echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='./img/".$wiersz["LOGIN"].".jpg'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
+                                                            $zdj1 = "./img/".$wiersz["LOGIN"].".jpg";
+                                                            $zdj2 = "./img/profilowe.jpg";
+                                            
+                                                            $zdj = file_exists($zdj1) ? $zdj1 : $zdj2; 
+
+                                                            echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='$zdj'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
                                                     }
                                                 }
                                                 else 
@@ -104,8 +119,14 @@
                                                     while($wiersz = $rezultat->fetch_assoc())
                                                     {
                                                         if($wiersz["LOGIN"]!=$login)
-                                                        {
-                                                            echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='./img/".$wiersz["LOGIN"].".jpg'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
+                                                            {
+                                                            
+                                                                $zdj1 = "./img/".$wiersz["LOGIN"].".jpg";
+                                                                $zdj2 = "./img/profilowe.jpg";
+                                            
+                                                                $zdj = file_exists($zdj1) ? $zdj1 : $zdj2;
+
+                                                                echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_login'> <img class='zdj' src='$zdj'  height='100' width='100'><div class='link_obok_zdj'> ".$wiersz["LOGIN"]."</div></a>";
                                                         }
     
                                                     }

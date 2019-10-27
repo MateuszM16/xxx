@@ -26,6 +26,8 @@
                     header('Location:logowanie.php');
                 }
 
+                $login = $_SESSION['zalogowany-user']; 
+
                 if(isset($_POST['text_post']))
                 {
                     $post = strip_tags($_POST["text_post"]);
@@ -109,16 +111,52 @@
                                          }
                                      else
                                      {
-                                         if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN,uzytkownicy.ID FROM znajomi,posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE (uzytkownicy.ID = ID_LOGIN_1 AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') OR uzytkownicy.ID = ID_LOGIN_2 AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) UNION ALL ( SELECT TEKST,DATA,LOGIN,uzytkownicy.ID FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) ORDER BY DATA DESC"))
+
+                                        if(isset($_POST['usun_post']))
+                                        {
+
+                                            $jaki_post = $_GET['ID'];
+                                           
+                                            if($rezultat = $conn->query("DELETE FROM posty WHERE ID = '$jaki_post'"))
+                                            {
+                                                unset($_POST['usun_post']);   
+         
+                                            }
+                                            else 
+                                            {
+                                                throw new Exception($conn->connect_error);
+                                            }
+                                        }
+
+                                        $sql1 = "SELECT TEKST,DATA,LOGIN,uzytkownicy.ID,posty.ID FROM znajomi,posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE (uzytkownicy.ID = ID_LOGIN_1 AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') OR uzytkownicy.ID = ID_LOGIN_2 AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) UNION ALL ( SELECT TEKST,DATA,LOGIN,uzytkownicy.ID,posty.ID FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login')) ORDER BY DATA DESC";
+                                        $sql2 = "SELECT TEKST,DATA,LOGIN,uzytkownicy.ID,posty.ID FROM znajomi,posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN ORDER BY DATA DESC";
+
+                                        if($_SESSION['admin']=="TAK")
+                                        {
+                                            $sql = $sql2;
+                                        }
+                                        else
+                                        {
+                                            $sql = $sql1;
+                                        }
+
+                                         if($rezultat = $conn->query($sql))
                                          {
                                             if ($rezultat->num_rows > 0) 
                                             {
                                                 while($wiersz = $rezultat->fetch_assoc())
                                                 {
+                                                    $zdj1 = "./img/".$wiersz["LOGIN"].".jpg";
+                                                    $zdj2 = "./img/profilowe.jpg";
+
+                                                    $zdj = file_exists($zdj1) ? $zdj1 : $zdj2; 
+
                                                     echo "<div class='y'>";
                                                     echo "<div class='autor'>";
-                                                    echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_autor'>".$wiersz["LOGIN"]."</a>";
-                                                    echo "<div class='data'>".$wiersz["DATA"]."</div>";
+                                                    echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_autor'><img class='zdj' src='$zdj'  height='30' width='30'>   ".$wiersz["LOGIN"]."</a>";
+                                                    echo "<div class='data'>".$wiersz["DATA"];
+                                                    echo "</div>";
+                                                    if(($login==$wiersz["LOGIN"])||($_SESSION['admin']=="TAK")) echo "<form action='tablica.php?ID=".$wiersz['ID']."' method='post'> <input type='submit' name='usun_post' value='X' class='usun_post'></form>";
                                                     echo "</div>";
                                                     echo "<div class='tekst'>".$wiersz["TEKST"]."</div>";
                                                     echo "</div>";  

@@ -173,6 +173,8 @@
                                     if(password_verify($haslo_l,$wiersz['HASLO']))
                                     {
                                         $_SESSION['zalogowany-user'] = $login_l;
+                                        $_SESSION['admin'] = $wiersz['Admin'];
+                                        
                                         unset($_POST['login-l']);
                                         header('Location:tablica.php');     
                                     }

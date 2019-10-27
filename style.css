@@ -169,3 +169,66 @@ input,textarea {
 	width: 100%;
 	padding-top: 25%;
 }
+
+.usun_post
+{
+	float: right;
+	width: 30px;
+	border-radius: 8px;
+	cursor: pointer;
+	margin-top: 10px;
+	font-size: 20px;
+	border: 1px;
+	background-color: white;
+	margin: 10px;
+	
+}
+
+.usun_post:hover
+{
+	background: rgb(0, 0, 0);
+	color:rgb(255, 0, 0);
+}
+
+.podziel1
+{
+	width: 33%;
+	float: left;
+	height: 30px;
+}
+
+.podziel2
+{
+	left: 45%;
+	width: 50%;
+	position: relative;
+	top: 80px;
+}
+
+.wyszukaj
+{
+	width: 50%;
+	min-width: 400px;
+	max-width: 600px;
+	border-radius: 8px;
+	height: 26px;
+	cursor: pointer;
+	text-align: center;
+	color: rgb(77, 47, 25);
+	font-size: 20px;
+	background-color: honeydew;
+	border:1px;
+}
+
+.wyszukaj:focus
+{
+	background: linear-gradient(rgba(94, 88, 88, 0.603),rgba(243, 174, 46, 0.753));
+	color: ivory;
+}
+.wyszuakj:hover
+{
+	background: linear-gradient(rgba(94, 88, 88, 0.603),rgba(243, 174, 46, 0.753));
+	color: ivory;
+}
+
+
