@@ -283,7 +283,7 @@
                                             }
                                         }
                                         
-                                        if(($login==$login_link)||($rezultat = $conn->query("SELECT * FROM znajomi WHERE ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') OR ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') ")))
+                                        if(($login==$login_link)||($_SESSION['admin']=="TAK")||($rezultat = $conn->query("SELECT * FROM znajomi WHERE ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') OR ID_LOGIN_2 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login') AND ID_LOGIN_1 = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') ")))
                                         if ($rezultat->num_rows > 0) 
                                         {
                                             if($rezultat = $conn->query("SELECT TEKST,DATA,LOGIN, posty.ID FROM posty INNER JOIN uzytkownicy ON uzytkownicy.ID = posty.ID_LOGIN WHERE uzytkownicy.ID = (SELECT ID FROM uzytkownicy WHERE LOGIN='$login_link') ORDER BY DATA DESC"))
@@ -297,7 +297,7 @@
                                                         echo "<a href='profil.php?LOGIN=".$wiersz["LOGIN"]."' class='link_autor'><img class='zdj' src='$zdj'  height='30' width='30'>   ".$wiersz["LOGIN"]."</a>";
                                                         echo "<div class='data'>".$wiersz['DATA'];
                                                         echo "</div>";
-                                                        if($login==$login_link) echo "<form action='profil.php?ID=".$wiersz['ID']."' method='post'> <input type='submit' name='usun_post' value='X' class='usun_post'></form>";
+                                                        if(($login==$login_link)||($_SESSION['admin']=="TAK")) echo "<form action='profil.php?ID=".$wiersz['ID']."' method='post'> <input type='submit' name='usun_post' value='X' class='usun_post'></form>";
                                                         echo "</div>";
                                                         echo "<div class='tekst'>".$wiersz["TEKST"]."</div>";
                                                         echo "</div>";  
@@ -327,7 +327,7 @@
                                             echo "<div class='autor'>";
                                             echo "</div>";
                                             echo "<div class='tekst'>";
-                                            if($login_link!=$login) echo "Dodaj do znajomych tego użytkownika aby móc zobaczyć jego posty";
+                                            if((!$login==$login_link)||(!$_SESSION['admin']=="TAK"))  echo "Dodaj do znajomych tego użytkownika aby móc zobaczyć jego posty";
                                             else echo "Brak postów do wyświetlenia";
                                             echo "</div>";  
                                             echo "</div>";
